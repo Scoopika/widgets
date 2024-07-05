@@ -5,7 +5,6 @@ import { Agent, Client, VoiceRecorder } from "@scoopika/client";
 import { useChatState } from "@scoopika/react";
 import { AgentData, Widget } from "@scoopika/types";
 import { useEffect, useState } from "react";
-import { BsFillSendFill } from "react-icons/bs";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -194,7 +193,12 @@ export default function ChatInterface({
 
   return (
     <div className="flex flex-col">
-      <div className="sticky top-0 left-0 w-full p-3 pl-5 pr-5 border-b-1 flex items-center bg-background/70 backdrop-blur-2xl z-20">
+      <div
+        className="sticky top-0 left-0 w-full p-3 pl-5 pr-5 border-b-1 flex items-center bg-background z-20"
+        style={{
+          backgroundColor: widget.bgColor,
+        }}
+      >
         <Button
           size="sm"
           variant="light"
@@ -216,7 +220,10 @@ export default function ChatInterface({
         {messages.map((msg, index) => {
           if (msg.role === "agent")
             return (
-              <div key={`msg-${index}`} className="text-sm w-full flex flex-col min-w-0">
+              <div
+                key={`msg-${index}`}
+                className="text-sm w-full flex flex-col min-w-0"
+              >
                 <MarkdownRenderer content={msg.response.content} />
               </div>
             );
@@ -232,9 +239,18 @@ export default function ChatInterface({
 
         {streamPlaceholder && (
           <div className="text-sm">
-            <MarkdownRenderer content={streamPlaceholder.response.content} />
+            <MarkdownRenderer content={streamPlaceholder.response.content} />{" "}
+            <span className="w-3 h-3 bg-foreground rounded-full"></span>
           </div>
         )}
+
+        {loading &&
+          (!streamPlaceholder ||
+            streamPlaceholder.response.content.length < 1) && (
+            <div className="text-xs text-primary animate-pulse">
+              Thinking...
+            </div>
+          )}
 
         {error && (
           <div className="p-3 rounded-lg bg-red-500/10 text-red-500 text-sm">

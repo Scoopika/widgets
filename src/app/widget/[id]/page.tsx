@@ -12,6 +12,8 @@ interface Props {
   };
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function WidgetPage({ params, searchParams }: Props) {
   const { id } = params;
   const { rows } = await turso.execute({

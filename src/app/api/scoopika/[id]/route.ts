@@ -2,29 +2,38 @@ import { turso } from "@/utils/db";
 import generateSecret from "@/utils/secret";
 import { Endpoint, Scoopika } from "@scoopika/scoopika";
 import { Widget } from "@scoopika/types";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 const endpoints: Record<string, Endpoint> = {};
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const quey = req.query;
-  const id = quey?.id;
+export async function POST(req: NextRequest, res: NextResponse) {
+  const paths = req.url.split("/");
+  const id = paths[paths.length - 1];
+  const body = await req.json();
 
   if (typeof id !== "string") {
-    return res.status(400).json({ success: false, error: "Invalid request" });
+    return NextResponse.json(
+      { success: false, error: "Invalid request" },
+      {
+        status: 400,
+      }
+    );
   }
 
   if (endpoints[id]) {
     const endpoint = endpoints[id];
 
-    return endpoint.handleRequest({
-      request: req.body,
-      stream: (s) => res.write(s),
-      end: () => res.end(),
+    const stream = new ReadableStream({
+      start(controller) {
+        endpoint.handleRequest({
+          request: body,
+          stream: (s) => controller.enqueue(s),
+          end: () => controller.close(),
+        });
+      },
     });
+
+    return new NextResponse(stream);
   }
 
   const { rows } = await turso.execute({
@@ -33,9 +42,11 @@ export default async function handler(
   });
 
   if (rows.length < 1) {
-    return res.status(404).json({
+    return NextResponse.json({
       success: false,
       error: "Widget not found",
+    }, {
+        status: 404
     });
   }
 
@@ -65,9 +76,15 @@ export default async function handler(
   });
   endpoints[id] = endpoint;
 
-  return endpoint.handleRequest({
-    request: req.body,
-    stream: (s) => res.write(s),
-    end: () => res.end(),
+  const stream = new ReadableStream({
+    start(controller) {
+      endpoint.handleRequest({
+        request: body,
+        stream: (s) => controller.enqueue(s),
+        end: () => controller.close(),
+      });
+    },
   });
+
+  return new NextResponse(stream);
 }
