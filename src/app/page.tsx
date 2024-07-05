@@ -1,3 +1,3 @@
 export default function Home() {
-  return <>Hello</>;
+  return <>Still under development... nice catch though {":)"}</>;
 }

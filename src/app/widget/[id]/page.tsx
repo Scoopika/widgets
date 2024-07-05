@@ -26,7 +26,13 @@ export default async function WidgetPage({ params, searchParams }: Props) {
       </div>
     );
 
-  const widget = rows[0] as unknown as Widget;
+  const widget = rows[0] as unknown as {
+    id: string;
+    userId: string;
+    payload: string;
+  };
+
+  const widgetData = JSON.parse(widget.payload) as Widget;
 
   const user = (
     await await turso.execute({
@@ -45,7 +51,7 @@ export default async function WidgetPage({ params, searchParams }: Props) {
 
   return (
     <Chat
-      widget={JSON.parse(JSON.stringify(widget))}
+      widget={widgetData}
       userId={searchParams?.userId || `${crypto.randomUUID()}`}
       plan={plan}
     />
