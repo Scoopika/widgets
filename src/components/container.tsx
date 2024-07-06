@@ -23,7 +23,7 @@ export default function Container({ widget, children }: Props) {
 
   return (
     <div
-      className="w-[100vw] h-[100vh] overflow-x-hidden fixed top-0 left-0"
+      className="min-w-[100vw] max-w-[100vw] min-h-[100vh] max-h-[100vh] overflow-x-hidden fixed top-0 left-0"
       style={{
         backgroundColor: widget.bgColor,
         color: widget.textColor,

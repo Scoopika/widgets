@@ -10,6 +10,7 @@ import Empty from "@/components/empty";
 import { Button } from "@nextui-org/react";
 import { PlanType } from "@/utils/plan";
 import Powered from "@/components/powered";
+import Container from "./container";
 
 interface Props {
   client: Client;
@@ -72,7 +73,9 @@ export default function Sessions({
   }, []);
 
   if (loading) {
-    return <Loading color={widget.textColor} />;
+    return <div className="p-6">
+      <Loading color={widget.textColor} />
+    </div>
   }
 
   return (
