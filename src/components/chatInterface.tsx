@@ -98,7 +98,7 @@ export default function ChatInterface({
 }: Props) {
   const scroll = () => {
     const elm = document.getElementById("bottom-div");
-    if (elm) elm.scrollIntoView();
+    if (elm) elm.scrollIntoView({ behavior: "smooth" });
   };
 
   const {
