@@ -290,7 +290,7 @@ export default function VoiceChatInterface({
         )}
         <div className="p-1 flex flex-col transition-all">
           <div className="flex items-center gap-3">
-            {widget.vision === "n" && (
+            {widget.vision === "y" && (
               <>
                 <input
                   type="file"
@@ -349,7 +349,10 @@ export default function VoiceChatInterface({
                 isIconOnly
                 variant="light"
                 startContent={<FaMicrophone size={16} />}
-                className="text-red-600 relative"
+                className="relative"
+                style={{
+                  color: widget.primaryColor
+                }}
                 isDisabled={loading || generating}
                 onPress={() => {
                   setRecorderOpen(true);
@@ -397,6 +400,9 @@ export default function VoiceChatInterface({
               size="sm"
               isIconOnly
               variant="light"
+              style={{
+                color: widget.primaryColor
+              }}
               startContent={
                 !loading && !generating && <RiSendPlane2Fill size={16} />
               }

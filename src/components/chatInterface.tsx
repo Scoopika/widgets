@@ -335,7 +335,7 @@ export default function ChatInterface({
               height="30px"
               className={`${recorderOpen ? "block" : "hidden"}`}
             />
-            {widget.vision === "n" && (
+            {widget.vision === "y" && (
               <>
                 <input
                   type="file"
@@ -377,7 +377,9 @@ export default function ChatInterface({
                   isIconOnly
                   variant="light"
                   startContent={<FaMicrophone size={16} />}
-                  className="text-red-600"
+                  style={{
+                    color: widget.primaryColor
+                  }}
                   isDisabled={loading || generating}
                   onPress={() => {
                     setRecorderOpen(true);
@@ -388,16 +390,18 @@ export default function ChatInterface({
             ) : (
               <>
                 <div className="w-full"></div>
-                <Button
-                  size="sm"
-                  isIconOnly
-                  variant="light"
-                  startContent={<IoMdClose size={16} />}
-                  onPress={() => {
-                    setRecorderOpen(false);
-                    if (recorder) recorder.stop();
-                  }}
-                />
+                {widget.audio === "y" && (
+                  <Button
+                    size="sm"
+                    isIconOnly
+                    variant="light"
+                    startContent={<IoMdClose size={16} />}
+                    onPress={() => {
+                      setRecorderOpen(false);
+                      if (recorder) recorder.stop();
+                    }}
+                  />
+                )}
                 <Button
                   size="sm"
                   isIconOnly
@@ -429,7 +433,7 @@ export default function ChatInterface({
                 !loading && !generating && <RiSendPlane2Fill size={16} />
               }
               style={{
-                color: widget.textColor
+                color: widget.primaryColor
               }}
               isLoading={loading || generating}
               onPress={() => {
