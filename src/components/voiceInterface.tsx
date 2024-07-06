@@ -14,7 +14,7 @@ import Powered from "@/components/powered";
 import { PlanType } from "@/utils/plan";
 import { IoIosClose, IoMdClose } from "react-icons/io";
 import { LuImagePlus } from "react-icons/lu";
-import { FaMicrophone } from "react-icons/fa";
+import { FaExternalLinkAlt, FaMicrophone } from "react-icons/fa";
 import { TbKeyboardHide } from "react-icons/tb";
 import {
   Popover,
@@ -22,6 +22,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { RiSendPlane2Fill } from "react-icons/ri";
+import { z } from "zod";
 
 interface Props {
   client: Client;
@@ -76,7 +77,6 @@ export default function VoiceChatInterface({
   agent,
   widget,
   session,
-  agentData,
   setSession,
   plan,
 }: Props) {
@@ -84,10 +84,7 @@ export default function VoiceChatInterface({
     loading,
     generating,
     newRequest,
-    messages,
-    streamPlaceholder,
     status,
-    working,
     voicePlaying,
     agentVoicePaused,
     voiceRecorder,
@@ -108,17 +105,35 @@ export default function VoiceChatInterface({
   const [error, setError] = useState<boolean>(false);
   const [images, setImages] = useState<string[]>([]);
   const [recorderOpen, setRecorderOpen] = useState<boolean>(false);
+  const [actions, setActions] = useState<Widget["actions"]>([]);
+
+  const addActions = () => {
+    widget.actions.forEach(action => {
+      agent.addClientAction({
+        name: action.id,
+        description: `Display a button '${action.title}'`,
+        parameters: z.object({}),
+        execute: () => {
+          setActions([action])
+        }
+      });
+    })
+  }
 
   useEffect(() => {
     if (voiceRecorder) {
       voiceRecorder.addVisualizer("user-voice-canvas", widget.waveColor);
     }
 
+    if ((widget.actions || []).length > 0) {
+      addActions();
+    }
+
     return () => {
       if (voiceRecorder) {
         try {
           voiceRecorder.stop();
-        } catch {} // no need for anything here
+        } catch { } // no need for anything here
       }
     };
   }, [voiceRecorder]);
@@ -144,7 +159,7 @@ export default function VoiceChatInterface({
       newRequest({
         inputs: { message, images: images.length > 0 ? images : undefined },
       });
-    } catch {} // no need to do anything for now
+    } catch { } // no need to do anything for now
 
     setMessage("");
   };
@@ -215,12 +230,25 @@ export default function VoiceChatInterface({
             </Button>
           )}
           {status && (
-            <div className="text-xs opacity-70">{status}</div>
+            <div className="text-xs opacity-70 animate-pulse">{status}</div>
           )}
         </div>
         <div className="w-full flex items-center justify-center md:pl-10 md:pr-10">
           {recognizedText}
         </div>
+
+        <div className="w-full flex flex-col items-center justify-center">
+          {actions.map((action, index) => (
+            <a key={`action-${index}`} href={action.link} target={action.target} className="text-sm p-2 pl-3 pr-3 rounded-xl font-semibold max-w-max flex items-center gap-3" style={{
+              background: widget.primaryColor,
+              color: widget.primaryTextColor
+            }}>
+              {action.title}
+              <FaExternalLinkAlt />
+            </a>
+          ))}
+        </div>
+
         {error && (
           <div className="p-3 rounded-lg bg-red-500/10 text-red-500 text-sm">
             We faced an error, try again later {":("}
