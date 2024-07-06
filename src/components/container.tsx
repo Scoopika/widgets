@@ -51,7 +51,7 @@ export default function Container({ widget, children }: Props) {
 
   return (
     <div
-      className="min-w-[100svw] max-w-[100svw] min-h-[100svh] max-h-[100svh] overflow-x-hidden fixed top-0 left-0"
+      className={`min-w-[100svw] max-w-[100svw] min-h-[100svh] max-h-[100svh] overflow-x-hidden fixed top-0 left-0 ${widget.themeMode}`}
       style={{
         backgroundColor: widget.bgColor,
         color: widget.textColor,

@@ -215,9 +215,9 @@ export default function ChatInterface({
   };
 
   return (
-    <div className="flex flex-col">
+    <div className={`flex flex-col ${widget.themeMode}`}>
       <div
-        className="sticky top-0 left-0 w-full p-3 pl-5 pr-5 border-b-1 flex items-center bg-background z-20"
+        className={`sticky top-0 left-0 w-full p-3 pl-5 pr-5 flex items-center bg-background z-20 ${widget.themeMode}`}
         style={{
           backgroundColor: widget.bgColor,
         }}
@@ -327,7 +327,7 @@ export default function ChatInterface({
             ))}
           </div>
         )}
-        <div className="p-1 flex flex-col transition-all">
+        <div className={`p-1 flex flex-col transition-all ${widget.themeMode}`}>
           <div className="flex items-center gap-3">
             <canvas
               id="user-voice-canvas"
@@ -428,6 +428,9 @@ export default function ChatInterface({
               startContent={
                 !loading && !generating && <RiSendPlane2Fill size={16} />
               }
+              style={{
+                color: widget.textColor
+              }}
               isLoading={loading || generating}
               onPress={() => {
                 if (recorderOpen && recorder) {

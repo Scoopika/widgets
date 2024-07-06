@@ -18,11 +18,7 @@ export default function Empty({
   return (
     <div className="w-full flex flex-col items-center p-8">
       <div
-        className="w-12 h-12 rounded-full flex items-center justify-center"
-        style={{
-          backgroundColor: widget.primaryColor,
-          color: widget.bgColor,
-        }}
+        className="w-12 h-12 rounded-full flex items-center justify-center bg-foreground text-background"
       >
         {icon}
       </div>
