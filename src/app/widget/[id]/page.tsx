@@ -12,7 +12,8 @@ interface Props {
   };
 }
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export default async function WidgetPage({ params, searchParams }: Props) {
   const { id } = params;
