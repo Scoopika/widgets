@@ -372,36 +372,37 @@ export default function ChatInterface({
                   }}
                 />
 
-                <Button
-                  size="sm"
-                  isIconOnly
-                  variant="light"
-                  startContent={<FaMicrophone size={16} />}
-                  style={{
-                    color: widget.primaryColor
-                  }}
-                  isDisabled={loading || generating}
-                  onPress={() => {
-                    setRecorderOpen(true);
-                    startRecorder();
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <div className="w-full"></div>
                 {widget.audio === "y" && (
                   <Button
                     size="sm"
                     isIconOnly
                     variant="light"
-                    startContent={<IoMdClose size={16} />}
+                    startContent={<FaMicrophone size={16} />}
+                    style={{
+                      color: widget.primaryColor
+                    }}
+                    isDisabled={loading || generating}
                     onPress={() => {
-                      setRecorderOpen(false);
-                      if (recorder) recorder.stop();
+                      setRecorderOpen(true);
+                      startRecorder();
                     }}
                   />
                 )}
+              </>
+            ) : (
+              <>
+                <div className="w-full"></div>
+
+                <Button
+                  size="sm"
+                  isIconOnly
+                  variant="light"
+                  startContent={<IoMdClose size={16} />}
+                  onPress={() => {
+                    setRecorderOpen(false);
+                    if (recorder) recorder.stop();
+                  }}
+                />
                 <Button
                   size="sm"
                   isIconOnly
