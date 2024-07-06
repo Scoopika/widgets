@@ -103,7 +103,6 @@ export default function VoiceChatInterface({
     pauseAgentVoice,
     resumeAgentVoice
   } = useVoiceChatState(client, agent, {
-    scroll,
     session_id: session,
     agent_voice: {
       audio: "agent-voice-audio",
