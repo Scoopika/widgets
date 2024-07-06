@@ -1,7 +1,6 @@
 "use client";
 
 import { Agent, Client } from "@scoopika/client";
-import { useChatState } from "@scoopika/react";
 import { AgentData, Widget } from "@scoopika/types";
 import { useEffect, useState } from "react";
 import Container from "./container";
@@ -34,7 +33,9 @@ export default function Chat({ userId, widget, plan }: Props) {
 
   if (!agentData) {
     return <Container widget={widget}>
+      <div className="p-6">
       <Loading color={widget.primaryColor} />
+      </div>
     </Container>
   }
 

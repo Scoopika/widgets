@@ -10,7 +10,7 @@ export default function Powered({ className }: Props) {
     <Link
       href="https://scoopika.com?ref=widgets"
       target="_blank"
-      className={`flex items-center justify-center text-center text-sm gap-2 font-semibold ${className}`}
+      className={`flex items-center justify-center text-center text-xs opacity-70 gap-2 font-semibold ${className}`}
     >
       <FaRocket />
 
