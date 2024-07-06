@@ -1,15 +1,13 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import { Agent, Client, VoiceRecorder } from "@scoopika/client";
-import { useChatState, useVoiceChatState } from "@scoopika/react";
+import { Agent, Client } from "@scoopika/client";
+import { useVoiceChatState } from "@scoopika/react";
 import { AgentData, Widget } from "@scoopika/types";
 import { useEffect, useState } from "react";
-import { BsFillSendFill } from "react-icons/bs";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import AgentAvatar from "./avatar";
 import { FaChevronLeft, FaPause, FaPlay } from "react-icons/fa6";
 import { MdContentCopy } from "react-icons/md";
 import Powered from "@/components/powered";
@@ -82,11 +80,6 @@ export default function VoiceChatInterface({
   setSession,
   plan,
 }: Props) {
-  const scroll = () => {
-    const elm = document.getElementById("bottom-div");
-    if (elm) elm.scrollIntoView();
-  };
-
   const {
     loading,
     generating,

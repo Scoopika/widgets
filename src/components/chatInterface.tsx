@@ -17,6 +17,8 @@ import { IoIosClose, IoMdClose } from "react-icons/io";
 import { LuImagePlus } from "react-icons/lu";
 import { FaMicrophone } from "react-icons/fa";
 import { RiSendPlane2Fill } from "react-icons/ri";
+import { z } from "zod";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 interface Props {
   client: Client;
@@ -66,10 +68,13 @@ const MarkdownRenderer = ({ content }: { content: string }) => {
   );
 };
 
-const UserMsg = ({ text, images }: { text: string; images: string[] }) => {
+const UserMsg = ({ text, images, widget }: { text: string; images: string[], widget: Widget }) => {
   return (
     <div className="flex w-full justify-end gap-4 lg:p-4">
-      <div className="p-4 rounded-t-md rounded-b-2xl bg-accent dark:bg-accent/30 text-sm">
+      <div className="p-4 rounded-t-md rounded-b-2xl text-sm" style={{
+        background: widget.textColor,
+        color: widget.bgColor
+      }}>
         {images.length > 0 && (
           <div className="flex items-center gap-4 mb-4">
             {images.map((image, index) => (
@@ -120,9 +125,27 @@ export default function ChatInterface({
   const [recorderState, setRecorderState] = useState<
     "stopped" | "paused" | "recording"
   >("stopped");
+  const [actions, setActions] = useState<Widget["actions"]>([]);
+
+  const addActions = () => {
+    widget.actions.forEach(action => {
+      agent.addClientAction({
+        name: action.id,
+        description: `Display a button '${action.title}'`,
+        parameters: z.object({}),
+        execute: () => {
+          setActions([action])
+        }
+      });
+    })
+  }
 
   useEffect(() => {
     scroll();
+
+    if ((widget.actions || []).length > 0) {
+      addActions();
+    }
 
     return () => {
       if (recorder) {
@@ -149,7 +172,7 @@ export default function ChatInterface({
     try {
       const audioInput = (await recorder.asRunInput()) || {};
       newRequest({ inputs: { ...audioInput, images } });
-    } catch {} // no need to do anything for now
+    } catch { } // no need to do anything for now
 
     setMessage("");
   };
@@ -233,6 +256,7 @@ export default function ChatInterface({
               key={`msg-${index}`}
               text={msg.request.message || ""}
               images={msg.request.images || []}
+              widget={widget}
             />
           );
         })}
@@ -251,6 +275,18 @@ export default function ChatInterface({
               Thinking...
             </div>
           )}
+
+        <div className="w-full flex flex-col">
+          {actions.map((action, index) => (
+            <a key={`action-${index}`} href={action.link} target={action.target} className="text-sm p-2 pl-3 pr-3 rounded-xl font-semibold max-w-max flex items-center gap-3" style={{
+              background: widget.primaryColor,
+              color: widget.primaryTextColor
+            }}>
+              {action.title}
+              <FaExternalLinkAlt />
+            </a>
+          ))}
+        </div>
 
         {error && (
           <div className="p-3 rounded-lg bg-red-500/10 text-red-500 text-sm">
