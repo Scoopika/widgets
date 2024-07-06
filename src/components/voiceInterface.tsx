@@ -344,24 +344,22 @@ export default function VoiceChatInterface({
               className={`${recorderOpen ? "block" : "hidden"}`}
             />
             {!recorderOpen ? (
-              widget.audio === "y" && (
-                <Button
-                  size="sm"
-                  isIconOnly
-                  variant="light"
-                  startContent={<FaMicrophone size={16} />}
-                  className="relative"
-                  style={{
-                    color: widget.primaryColor
-                  }}
-                  isDisabled={loading || generating}
-                  onPress={() => {
-                    setRecorderOpen(true);
-                    startRecorder();
-                    pauseAgentVoice();
-                  }}
-                />
-              )
+              <Button
+                size="sm"
+                isIconOnly
+                variant="light"
+                startContent={<FaMicrophone size={16} />}
+                className="relative"
+                style={{
+                  color: widget.primaryColor
+                }}
+                isDisabled={loading || generating}
+                onPress={() => {
+                  setRecorderOpen(true);
+                  startRecorder();
+                  pauseAgentVoice();
+                }}
+              />
             ) : (
               <>
                 <Button
