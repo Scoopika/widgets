@@ -91,7 +91,8 @@ export default function VoiceChatInterface({
     recorderState,
     recognizedText,
     pauseAgentVoice,
-    resumeAgentVoice
+    resumeAgentVoice,
+    messages
   } = useVoiceChatState(client, agent, {
     session_id: session,
     agent_voice: {
@@ -106,6 +107,8 @@ export default function VoiceChatInterface({
   const [images, setImages] = useState<string[]>([]);
   const [recorderOpen, setRecorderOpen] = useState<boolean>(false);
   const [actions, setActions] = useState<Widget["actions"]>([]);
+
+  console.log(messages);
 
   const addActions = () => {
     widget.actions.forEach(action => {
@@ -153,19 +156,14 @@ export default function VoiceChatInterface({
   };
 
   const runAudio = async () => {
-    if (!voiceRecorder) return;
-
     try {
       setRecorderOpen(false);
-      const response = await newRequest({
-        inputs: { message, images: images.length > 0 ? images : undefined },
-        hooks: {
-          onAudio: (a) => console.log(a)
-        }
+      newRequest({
+        inputs: { message, images: images.length > 0 ? images : undefined }
       });
-
-      console.log(response);
-    } catch { } // no need to do anything for now
+    } catch (err) {
+      console.error(err);
+    }
 
     setMessage("");
   };
