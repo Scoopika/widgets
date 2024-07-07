@@ -158,6 +158,9 @@ export default function VoiceChatInterface({
     try {
       newRequest({
         inputs: { message, images: images.length > 0 ? images : undefined },
+        hooks: {
+          onAudio: (a) => console.log(a)
+        }
       });
     } catch { } // no need to do anything for now
 

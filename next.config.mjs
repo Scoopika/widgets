@@ -1,16 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    headers: () => [
-        {
-            source: '/widget/:id',
-            headers: [
-                {
-                    key: 'Cache-Control',
-                    value: 'no-store',
-                },
-            ],
-        },
-    ],
-}
+const nextConfig = {}
 
 export default nextConfig;
