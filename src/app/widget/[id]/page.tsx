@@ -9,6 +9,7 @@ interface Props {
   };
   searchParams: {
     userId?: string;
+    session_id?: string;
   };
 }
 
@@ -56,6 +57,7 @@ export default async function WidgetPage({ params, searchParams }: Props) {
     <Chat
       widget={widgetData}
       userId={searchParams?.userId || `${crypto.randomUUID()}`}
+      session_id={searchParams?.session_id}
       plan={plan}
     />
   );

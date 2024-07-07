@@ -14,12 +14,13 @@ interface Props {
   userId: string;
   widget: Widget;
   plan: PlanType;
+  session_id?: string;
 }
 
-export default function Chat({ userId, widget, plan }: Props) {
+export default function Chat({ userId, widget, plan, session_id }: Props) {
   const client = new Client(`/api/scoopika/${widget.id}`);
   const agent = new Agent(widget.agentId, client);
-  const [session, setSession] = useState<string | undefined>(undefined);
+  const [session, setSession] = useState<string | undefined>(session_id);
   const [agentData, setAgentData] = useState<AgentData | null>(null);
 
   const loadAgent = async () => {
