@@ -156,12 +156,14 @@ export default function VoiceChatInterface({
     if (!voiceRecorder) return;
 
     try {
-      newRequest({
+      const response = await newRequest({
         inputs: { message, images: images.length > 0 ? images : undefined },
         hooks: {
           onAudio: (a) => console.log(a)
         }
       });
+
+      console.log(response);
     } catch { } // no need to do anything for now
 
     setMessage("");
@@ -411,13 +413,7 @@ export default function VoiceChatInterface({
               }
               isLoading={loading || generating}
               onPress={() => {
-                if (recorderOpen && voiceRecorder) {
-                  voiceRecorder.pause();
-                  setRecorderOpen(false);
-                  runAudio();
-                } else {
-                  run();
-                }
+                runAudio();
               }}
             />
           </div>

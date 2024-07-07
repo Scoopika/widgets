@@ -33,7 +33,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
-    return new NextResponse(stream);
+    return new Response(stream);
   }
 
   const { rows } = await turso.execute({
@@ -86,5 +86,5 @@ export async function POST(req: NextRequest, res: NextResponse) {
     },
   });
 
-  return new NextResponse(stream);
+  return new Response(stream);
 }
