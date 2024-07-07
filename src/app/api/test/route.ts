@@ -1,3 +1,3 @@
 export async function POST() {
-    return "this is a test";
+    return new Response("Hello");
 }
