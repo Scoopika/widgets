@@ -109,8 +109,6 @@ export default function VoiceChatInterface({
   const [recorderOpen, setRecorderOpen] = useState<boolean>(false);
   const [actions, setActions] = useState<Widget["actions"]>([]);
 
-  console.log(messages);
-
   const addActions = () => {
     widget.actions.forEach(action => {
       agent.addClientAction({
