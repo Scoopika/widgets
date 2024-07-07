@@ -92,7 +92,8 @@ export default function VoiceChatInterface({
     recognizedText,
     pauseAgentVoice,
     resumeAgentVoice,
-    messages
+    messages,
+    updateRecognizedText
   } = useVoiceChatState(client, agent, {
     session_id: session,
     agent_voice: {
@@ -373,7 +374,8 @@ export default function VoiceChatInterface({
                   startContent={<IoMdClose size={16} />}
                   onPress={() => {
                     setRecorderOpen(false);
-                    if (voiceRecorder) voiceRecorder.stop();
+                    if (voiceRecorder) voiceRecorder.cancel();
+                    updateRecognizedText("");
                   }}
                 />
                 <Button
