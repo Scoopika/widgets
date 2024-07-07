@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.setHeader("Content-Type", "text/plain");
             res.setHeader("Transfer-Encoding", "chunked");
 
-            await endpoint.handleRequest({
+            return await endpoint.handleRequest({
                 request: body,
                 stream: (s) => res.write(s),
                 end: () => res.end(),
