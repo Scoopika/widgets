@@ -33,7 +33,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
-    return new Response(stream);
+    return new NextResponse(stream, {
+      headers: {
+        "Content-Type": "text/plain",
+        "Transfer-Encoding": "chunked"
+      }
+    });
   }
 
   const { rows } = await turso.execute({
@@ -86,5 +91,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     },
   });
 
-  return new Response(stream);
+  return new NextResponse(stream, {
+    headers: {
+      "Content-Type": "text/plain",
+      "Transfer-Encoding": "chunked"
+    }
+  });
 }
