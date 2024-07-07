@@ -156,6 +156,7 @@ export default function VoiceChatInterface({
     if (!voiceRecorder) return;
 
     try {
+      setRecorderOpen(false);
       const response = await newRequest({
         inputs: { message, images: images.length > 0 ? images : undefined },
         hooks: {
